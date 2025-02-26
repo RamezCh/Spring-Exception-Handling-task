@@ -12,34 +12,37 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class AnimalIntegrationTest {
+class CarIntegrationTest {
 
     @Autowired
     private MockMvc mvc;
 
     @Test
-    void getAnimalSpecies_returnIllegalArgumentException() throws Exception {
+    void getCarBrand_returnIllegalArgumentException() throws Exception {
         // WHEN & THEN
-        mvc.perform(get("/api/animals/cat")
+        mvc.perform(get("/api/cars/bmw")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
+                // We didn't test timestamp because its complicated getting same time
                 .andExpect(content().json("""
                 {
-                    "message": "Only 'dog' is allowed"
+                    "message": "Only 'porsche' allowed"
                 }
                 """));
     }
 
     @Test
-    void getAllAnimals_returnNoSuchElementException() throws Exception {
-        // WHEN & THEN
-        mvc.perform(get("/api/animals")
-                        .contentType(MediaType.APPLICATION_JSON))
+    void getAllCars_returnNoSuchElementFound() throws Exception {
+        // WHEN
+        mvc.perform(get("/api/cars")
+                .contentType(MediaType.APPLICATION_JSON))
+                // THEN
                 .andExpect(status().isNotFound())
                 .andExpect(content().json("""
                 {
-                    "message": "No Animals found"
+                    "message": "No Cars found"
                 }
-                """));
+                """
+                ));
     }
 }
