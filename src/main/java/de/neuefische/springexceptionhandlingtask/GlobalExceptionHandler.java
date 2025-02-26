@@ -22,4 +22,11 @@ public class GlobalExceptionHandler {
     public ErrorMessage handleNoSuchElementException(NoSuchElementException exception) {
         return new ErrorMessage(exception.getMessage(), LocalDateTime.now());
     }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorMessage handleAllExceptions(Exception exception) {
+        System.err.println("Unhandled exception occurred: " + exception.getMessage());
+        return new ErrorMessage("An unexpected error occurred. Please try again later.", LocalDateTime.now());
+    }
 }
